@@ -1,29 +1,27 @@
-import os
+from os import listdir, getcwd
 
 
 def search_function():
     print("Select a document to search:")
-    file_list = os.listdir(path='./files')  # '.' means current dir and rest folder path
-    for document in file_list:
-        print(document)
-    searchable_file = input('\n>>> ')
+    file_list = listdir()
+    dirpath = getcwd()
+    [print(file) for file in file_list]
+    
+    file_choice = input('\nFilename >>> ')
+    
     try:
-        with open(f"files/{searchable_file}", "r", encoding="utf8") as file:
+        with open(f"{dirpath}/{file_choice}", "r", encoding="utf8") as file:
+            
             lines = file.readlines()
+            
             while True:
                 search_term = input('\nEnter a search term\n >>> ')
-                count = 0
-                for line in lines:
-                    count += line.count(search_term)
-                if count > 0:
-                    print(f"\nWord count for '{search_term}': {count}")
-                else:
-                    print('\nSearch yielded no results')
+                count = sum(line.count(search_term) for line in lines)
+                print(f"\nWord count for '{search_term}': {count}") if count > 0 else print('\nSearch yielded no results')
 
-    except FileNotFoundError:
-        print(f"\n'{searchable_file}' doesn't exist\n")
+    except Exception:
+        print(f"\n'{file_choice}' doesn't exist\n")
         search_function()
-
 
 search_function()
 
